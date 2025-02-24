@@ -1,0 +1,34 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      run: echo "${{ Bhar_th.2l3 }}" | docker login -u "${{ bharath2410 }}" --password-stdin
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ bharath2410 }}/webserver:latest .
+        docker push ${{ bharath2410}}/webserver:latest
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ 3.110.204.150 }}
+        username: ${{ ec2-user }}
+        key: ${{ janu.pem }}
+        script: |
+          docker pull ${{ bharath2410 }}/webserver:latest
+          docker stop webserver || true
+          docker rm webserver || true
+          docker run -d -p 5000:5000 --name webserver ${{ bharath2410 }}/webserver:latest
